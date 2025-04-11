@@ -7,7 +7,6 @@ int isKeyword(const char *str, int len, const char *kw)
 
 Token tokenizeNum(const char *p)
 {
-    // if (isdigit(*p))
 
     int value = 0;
     const char *numStart = p;
@@ -22,51 +21,28 @@ Token tokenizeNum(const char *p)
 
 Token tokenizeOperators(const char *p)
 {
-    switch (*p)
+    Token tokenizeOperators(const char *p)
     {
-    case '=':
-        if (*(p + 1) == '=')
+        if (*p == '=' && *(p + 1) == '=')
             return makeToken(TK_EQUALS, p, 2, 0);
-        return makeToken(TK_ASSIGN, p, 1, 0);
-    case '+':
-        return makeToken(TK_ADD, p, 1, 0);
-    case '-':
-        return makeToken(TK_SUBTRACT, p, 1, 0);
-    case '/':
-        return makeToken(TK_DIVIDE, p, 1, 0);
-    case '*':
-        return makeToken(TK_MULTIPLY, p, 1, 0);
-    case '%':
-        return makeToken(TK_MODULO, p, 1, 0);
-    case '<':
-        if (*(p + 1) == '=')
+        if (*p == '<' && *(p + 1) == '=')
             return makeToken(TK_LEQ, p, 2, 0);
-        return makeToken(TK_LT, p, 1, 0);
-    case '>':
-        if (*(p + 1) == '=')
+        if (*p == '>' && *(p + 1) == '=')
             return makeToken(TK_GEQ, p, 2, 0);
-        return makeToken(TK_GT, p, 1, 0);
-    case '(':
-        return makeToken(TK_LPAREN, p, 1, 0);
-    case ')':
-        return makeToken(TK_RPAREN, p, 1, 0);
-    case '{':
-        return makeToken(TK_LBRACE, p, 1, 0);
-    case '}':
-        return makeToken(TK_RBRACE, p, 1, 0);
-    case ';':
-        return makeToken(TK_SEMICOLON, p, 1, 0);
-    case '!':
-        if (*(p + 1) == '=')
+        if (*p == '!' && *(p + 1) == '=')
             return makeToken(TK_NEQ, p, 2, 0);
-        break;
-    default:
+
+        for (size_t i = 0; i < sizeof(SingleCharOperators) / sizeof(SingleCharOperators[0]); i++)
+        {
+            if (*p == SingleCharOperators[i].op)
+                return makeToken(SingleCharOperators[i].type, p, 1, 0);
+        }
+
         return makeToken(TK_UNKNOWN, p, 1, 0);
     }
 }
 
-// check alphabetical first
-void tokenizeKeywords(const char *p)
+Token tokenizeKeywords(const char *p, int *advance)
 {
     const char *idStart = p;
     while (isalnum(*p) || *p == '_')
@@ -74,16 +50,31 @@ void tokenizeKeywords(const char *p)
         p++;
     }
     int len = p - idStart;
-    if (isKeyword(idStart, len, "print"))
-        return makeToken(TK_KEYWORD_PRINT, idStart, len, 0);
-    else if (isKeyword(idStart, len, "while"))
-        return makeToken(TK_KEYWORD_WHILE, idStart, len, 0);
-    else if (isKeyword(idStart, len, "if"))
-        return makeToken(TK_KEYWORD_IF, idStart, len, 0);
-    else if (isKeyword(idStart, len, "else"))
-        return makeToken(TK_KEYWORD_ELSE, idStart, len, 0);
-    else
-        return makeToken(TK_IDENTIFIER, idStart, len, 0);
+    *advance = len;
+
+    switch (*idStart)
+    {
+    case 'p':
+        if (isKeyword(idStart, len, "print"))
+            return makeToken(TK_KEYWORD_PRINT, idStart, len, 0);
+        break;
+
+    case 'w':
+        if (isKeyword(idStart, len, "while"))
+            return makeToken(TK_KEYWORD_WHILE, idStart, len, 0);
+        break;
+
+    case 'i':
+        if (isKeyword(idStart, len, "if"))
+            return makeToken(TK_KEYWORD_IF, idStart, len, 0);
+        break;
+
+    case 'e':
+        if (isKeyword(idStart, len, "else"))
+            return makeToken(TK_KEYWORD_ELSE, idStart, len, 0);
+        break;
+    }
+    return makeToken(TK_IDENTIFIER, idStart, len, 0);
 }
 
 TokenArray tokenize(const char *source)
@@ -115,14 +106,18 @@ TokenArray tokenize(const char *source)
         if (isdigit(*p))
         {
             currToken = tokenizeNum(p);
+            p += currToken.length;
         }
         else if (isalpha(*p) || *p == '_')
         {
-            currToken = tokenizeOperators(p);
+            int advance;
+            currToken = tokenizeKeywords(p, &advance);
+            p += advance;
         }
         else
         {
             currToken = tokenizeOperators(p);
+            p++;
         }
         pushToken(currToken, &tokens);
     }

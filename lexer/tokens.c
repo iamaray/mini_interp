@@ -38,4 +38,3 @@ Token makeToken(TokenType type, const char *start, int length, int value)
 
     return t;
 }
-
