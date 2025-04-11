@@ -11,8 +11,7 @@ The toy language allows for the following very basic features:
 - Basic mathematical operations (`+`, `-`, `*`, `/`)
 - Printing to console
 - Comments with `//` syntax
-- Comparison operators (`==`, `<=`, `<=`, `<`, `>`)
-
+- Comparison operators (`==`, `!=`, `<=`, `<=`, `<`, `>`, `%`)
 
 ## To-Do
 
