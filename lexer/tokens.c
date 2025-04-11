@@ -26,3 +26,16 @@ void pushToken(Token token, TokenArray *arr)
     }
     arr->data[arr->count++] = token;
 }
+
+Token makeToken(TokenType type, const char *start, int length, int value)
+{
+    Token t;
+
+    t.type = type;
+    t.start = start;
+    t.length = length;
+    t.value = value;
+
+    return t;
+}
+
