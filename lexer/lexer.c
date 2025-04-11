@@ -21,25 +21,22 @@ Token tokenizeNum(const char *p)
 
 Token tokenizeOperators(const char *p)
 {
-    Token tokenizeOperators(const char *p)
+    if (*p == '=' && *(p + 1) == '=')
+        return makeToken(TK_EQUALS, p, 2, 0);
+    if (*p == '<' && *(p + 1) == '=')
+        return makeToken(TK_LEQ, p, 2, 0);
+    if (*p == '>' && *(p + 1) == '=')
+        return makeToken(TK_GEQ, p, 2, 0);
+    if (*p == '!' && *(p + 1) == '=')
+        return makeToken(TK_NEQ, p, 2, 0);
+
+    for (size_t i = 0; i < sizeof(SingleCharOperators) / sizeof(SingleCharOperators[0]); i++)
     {
-        if (*p == '=' && *(p + 1) == '=')
-            return makeToken(TK_EQUALS, p, 2, 0);
-        if (*p == '<' && *(p + 1) == '=')
-            return makeToken(TK_LEQ, p, 2, 0);
-        if (*p == '>' && *(p + 1) == '=')
-            return makeToken(TK_GEQ, p, 2, 0);
-        if (*p == '!' && *(p + 1) == '=')
-            return makeToken(TK_NEQ, p, 2, 0);
-
-        for (size_t i = 0; i < sizeof(SingleCharOperators) / sizeof(SingleCharOperators[0]); i++)
-        {
-            if (*p == SingleCharOperators[i].op)
-                return makeToken(SingleCharOperators[i].type, p, 1, 0);
-        }
-
-        return makeToken(TK_UNKNOWN, p, 1, 0);
+        if (*p == SingleCharOperators[i].op)
+            return makeToken(SingleCharOperators[i].type, p, 1, 0);
     }
+
+    return makeToken(TK_UNKNOWN, p, 1, 0);
 }
 
 Token tokenizeKeywords(const char *p, int *advance)
