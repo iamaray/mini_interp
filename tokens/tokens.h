@@ -36,12 +36,12 @@ typedef struct
     TokenType type;
     const char *start;
     int length;
-    int value;
+    int value; // for numeric assignments
 } Token;
 
 typedef struct
 {
-    Token *token;
+    Token *data;
     int capacity;
     int count;
 } TokenArray;
