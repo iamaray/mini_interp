@@ -1,3 +1,6 @@
+#ifndef TOKENS_H
+#define TOKENS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,3 +52,5 @@ typedef struct
 
 void initTokenArray(TokenArray *arr);
 void pushToken(Token token, TokenArray *arr);
+
+#endif
