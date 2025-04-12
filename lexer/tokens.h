@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 typedef enum
 {
     TK_INT, //
@@ -52,5 +51,4 @@ typedef struct
 
 void initTokenArray(TokenArray *arr);
 void pushToken(Token token, TokenArray *arr);
-
 #endif
