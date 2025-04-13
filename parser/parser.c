@@ -57,3 +57,38 @@ ASTNode *parserProgram()
     return node;
 }
 
+ASTNode *parseStatement()
+{
+    Token tok = currentToken();
+    ASTNode *node;
+
+    switch (tok.type)
+    {
+    case TK_KEYWORD_PRINT:
+        advance();
+        node = newASTNode(AST_PRINT);
+        node->print_stmt.expr = parseExpr();
+        expect(TK_SEMICOLON);
+        break;
+
+    case TK_KEYWORD_WHILE:
+        advance();
+        expect(TK_LPAREN);
+        ASTNode *cond = parseExpr();
+    
+        break;
+
+    case TK_LBRACE:
+
+        break;
+    case TK_IDENTIFIER:
+        if (peekToken(1).type == TK_ASSIGN)
+
+            break;
+    default:
+        fprintf(stderr, "Unknown statement start (token type %d)\n", tok.type);
+        exit(EXIT_FAILURE);
+        break;
+    }
+    return node;
+}
