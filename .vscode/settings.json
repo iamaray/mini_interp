@@ -1,5 +1,16 @@
 {
   "files.associations": {
-    "globals.h": "c"
+    "globals.h": "c",
+    "__hash_table": "cpp",
+    "__tuple": "cpp",
+    "array": "cpp",
+    "type_traits": "cpp",
+    "limits": "cpp",
+    "ratio": "cpp",
+    "tuple": "cpp",
+    "variant": "cpp",
+    "chrono": "cpp",
+    "compare": "cpp",
+    "cstddef": "cpp"
   }
 }
