@@ -4,9 +4,9 @@ A small interpreter for an extremely simple "toy" programming language. The inte
 
 The ultimate goal is to slowly expand this into a GPU-accelerated language for scientific computing and deep learning.
 
-## Toy Language Features
+## Core Language Features
 
-The toy language allows for the following very basic features:
+As of now, the core language allows for the following very basic features:
 
 - Variable assignment (int types only)
 - While loops
